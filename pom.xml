@@ -69,6 +69,11 @@
             <version>${avro.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>angus-mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
             <version>1.0.2</version>
@@ -117,6 +122,15 @@
                     <schemaTypes>
                         <orders-value>AVRO</orders-value>
                     </schemaTypes>
+                    <metadata>
+                        <orders-value>
+                            <properties>
+                                <owner>Bob Jones</owner>
+                                <owner_email>rayokota@gmail.com</owner_email>
+                                <slo_timeliness_secs>10</slo_timeliness_secs>
+                            </properties>
+                        </orders-value>
+                    </metadata>
                     <ruleSet>
                         <orders-value>
                             <domainRules>
@@ -127,8 +141,9 @@
                                     <mode>READ</mode>
                                     <type>SLO_TIMELINESS</type>
                                     <params>
-                                        <mail.smtp.host>value1</mail.smtp.host>
-                                        <mail.smtp.port>value2</mail.smtp.port>
+                                        <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
+                                        <mail.smtp.port>587</mail.smtp.port>
+                                        <mail.smtp.from>rayokota@gmail.com</mail.smtp.from>
                                     </params>
                                     <onFailure>EMAIL</onFailure>
                                     <disabled>false</disabled>
