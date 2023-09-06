@@ -1,10 +1,9 @@
 package io.confluent.data.contracts.rules;
 
-import com.acme.Order;
 import io.confluent.kafka.schemaregistry.rules.RuleContext;
 import io.confluent.kafka.schemaregistry.rules.RuleException;
 import io.confluent.kafka.schemaregistry.rules.RuleExecutor;
-import java.time.Instant;
+import org.apache.avro.generic.GenericData;
 
 public class CheckSloTimeliness implements RuleExecutor {
 
@@ -17,9 +16,9 @@ public class CheckSloTimeliness implements RuleExecutor {
     try {
       String sloStr = ctx.getParameter("slo_timeliness_secs");
       int slo = Integer.parseInt(sloStr);
-      Instant timestamp = ((Order) message).getTimestamp();
+      long timestamp = (Long) ((GenericData.Record) message).get("timestamp");
       long now = System.currentTimeMillis();
-      return now - timestamp.toEpochMilli() <= slo;
+      return now - timestamp <= slo;
     } catch (Exception e) {
       throw new RuleException(e);
     }
