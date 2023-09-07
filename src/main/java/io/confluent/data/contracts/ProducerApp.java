@@ -1,4 +1,4 @@
-package io.confluent.data.contracts.producer;
+package io.confluent.data.contracts;
 
 import io.confluent.data.contracts.utils.ClientUtils;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;

@@ -1,4 +1,4 @@
-package io.confluent.data.contracts.consumer;
+package io.confluent.data.contracts;
 
 import io.confluent.data.contracts.rules.CheckSloTimeliness;
 import io.confluent.data.contracts.rules.EmailAction;

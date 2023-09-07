@@ -18,7 +18,7 @@ public class CheckSloTimeliness implements RuleExecutor {
       int slo = Integer.parseInt(sloStr);
       long timestamp = (Long) ((GenericData.Record) message).get("timestamp");
       long now = System.currentTimeMillis();
-      return now - timestamp <= slo;
+      return now - timestamp <= slo * 1000L;
     } catch (Exception e) {
       throw new RuleException(e);
     }

@@ -70,6 +70,7 @@ public class EmailAction implements RuleAction {
       mail.setContent(multipart);
 
       Transport.send(mail);
+      System.out.println("Sent email to " + to);
     } catch (Exception e) {
       throw new RuleException(e);
     }

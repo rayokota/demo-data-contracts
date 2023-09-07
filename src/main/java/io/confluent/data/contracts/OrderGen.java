@@ -1,4 +1,4 @@
-package io.confluent.data.contracts.producer;
+package io.confluent.data.contracts;
 
 import com.acme.Order;
 import com.acme.OrderStatus;
