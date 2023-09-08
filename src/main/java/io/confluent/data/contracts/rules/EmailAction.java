@@ -15,7 +15,6 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 import org.apache.avro.generic.GenericData;
 
 public class EmailAction implements RuleAction {
@@ -25,8 +24,6 @@ public class EmailAction implements RuleAction {
 
   private String username;
   private String password;
-
-  private Random r = new Random();
 
   public String type() {
     return "EMAIL";

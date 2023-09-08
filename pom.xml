@@ -135,17 +135,30 @@
                         <orders-value>
                             <domainRules>
                                 <rule>
+                                    <name>checkTotalPrice</name>
+                                    <doc>Check total price</doc>
+                                    <kind>CONDITION</kind>
+                                    <type>CEL</type>
+                                    <mode>WRITE</mode>
+                                    <expr>message.totalPriceCents > 0</expr>
+                                    <params>
+                                        <dlq.topic>bad_orders</dlq.topic>
+                                    </params>
+                                    <onFailure>DLQ</onFailure>
+                                    <disabled>false</disabled>
+                                </rule>
+                                <rule>
                                     <name>checkSloTimeliness</name>
                                     <doc>Check SLO timeliness</doc>
                                     <kind>CONDITION</kind>
-                                    <mode>READ</mode>
                                     <type>CEL</type>
+                                    <mode>READ</mode>
+                                    <expr>true</expr>
                                     <params>
                                         <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                                         <mail.smtp.port>587</mail.smtp.port>
                                         <mail.smtp.from>rayokota@gmail.com</mail.smtp.from>
                                     </params>
-                                    <expr>true</expr>
                                     <onSuccess>EMAIL</onSuccess>
                                     <disabled>false</disabled>
                                 </rule>
