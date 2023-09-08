@@ -50,7 +50,7 @@ public class ProducerApp implements Runnable {
         // Send the record
         producer.send(record);
 
-        System.out.println("New purchase order " + record.value());
+        System.out.println("New order: " + record.value());
 
         Thread.sleep(1000);
       }

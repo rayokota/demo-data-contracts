@@ -15,6 +15,7 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import org.apache.avro.generic.GenericData;
 
 public class EmailAction implements RuleAction {
@@ -24,6 +25,8 @@ public class EmailAction implements RuleAction {
 
   private String username;
   private String password;
+
+  private Random r = new Random();
 
   public String type() {
     return "EMAIL";
@@ -36,6 +39,25 @@ public class EmailAction implements RuleAction {
   }
 
   public void run(RuleContext ctx, Object message, RuleException ex)
+    throws RuleException {
+    if (!meetsSloTimeliness(ctx, message)) {
+      sendMail(ctx, message);
+    }
+  }
+
+  private boolean meetsSloTimeliness(RuleContext ctx, Object message) throws RuleException {
+    try {
+      String sloStr = ctx.getParameter("slo_timeliness_secs");
+      int slo = Integer.parseInt(sloStr);
+      long timestamp = (Long) ((GenericData.Record) message).get("timestamp");
+      long now = System.currentTimeMillis();
+      return now - timestamp <= slo * 1000L;
+    } catch (Exception e) {
+      throw new RuleException(e);
+    }
+  }
+
+  private void sendMail(RuleContext ctx, Object message)
       throws RuleException {
     try {
       String from = ctx.getParameter("mail.smtp.from");
@@ -70,7 +92,7 @@ public class EmailAction implements RuleAction {
       mail.setContent(multipart);
 
       Transport.send(mail);
-      System.out.println("Sent email to " + to);
+      System.out.println("Bad order, sent email to " + to);
     } catch (Exception e) {
       throw new RuleException(e);
     }

@@ -139,13 +139,14 @@
                                     <doc>Check SLO timeliness</doc>
                                     <kind>CONDITION</kind>
                                     <mode>READ</mode>
-                                    <type>SLO_TIMELINESS</type>
+                                    <type>CEL</type>
                                     <params>
                                         <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                                         <mail.smtp.port>587</mail.smtp.port>
                                         <mail.smtp.from>rayokota@gmail.com</mail.smtp.from>
                                     </params>
-                                    <onFailure>EMAIL</onFailure>
+                                    <expr>true</expr>
+                                    <onSuccess>EMAIL</onSuccess>
                                     <disabled>false</disabled>
                                 </rule>
                             </domainRules>

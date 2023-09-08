@@ -1,14 +1,11 @@
 package io.confluent.data.contracts;
 
-import io.confluent.data.contracts.rules.CheckSloTimeliness;
 import io.confluent.data.contracts.rules.EmailAction;
 import io.confluent.data.contracts.utils.ClientUtils;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -24,8 +21,6 @@ public class ConsumerApp implements Runnable {
 
   private Properties props;
   private String topic;
-  private String groupId;
-  private String clientId;
 
   public ConsumerApp(
       String propertiesFile,
@@ -47,9 +42,6 @@ public class ConsumerApp implements Runnable {
       props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
       props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
       props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1000);
-      props.put(AbstractKafkaSchemaSerDeConfig.RULE_EXECUTORS, "checkSloTimeliness");
-      props.put(AbstractKafkaSchemaSerDeConfig.RULE_EXECUTORS + ".checkSloTimeliness.class",
-          CheckSloTimeliness.class.getName());
       props.put(AbstractKafkaSchemaSerDeConfig.RULE_ACTIONS, "checkSloTimeliness");
       props.put(AbstractKafkaSchemaSerDeConfig.RULE_ACTIONS + ".checkSloTimeliness.class",
           EmailAction.class.getName());
@@ -59,9 +51,6 @@ public class ConsumerApp implements Runnable {
           password);
 
       topic = props.getProperty("topic");
-
-      this.groupId = groupId;
-      this.clientId = clientId;
     } catch (Exception e) {
       log.error("Error in ConsumerApp.constructor", e);
     }
@@ -77,9 +66,7 @@ public class ConsumerApp implements Runnable {
         // Consume records
         ConsumerRecords<String, Object> records = consumer.poll(Duration.ofMillis(10000));
         for (ConsumerRecord<String, Object> record : records) {
-          String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-          System.out.println(timeStamp + ": consumer client ID: "
-              + clientId + ", message: " + record.value().toString());
+          System.out.println("New order: " + record.value());
         }
       }
     } catch (Exception e) {
