@@ -40,6 +40,9 @@ public class EmailAction implements RuleAction {
     if (!meetsSloTimeliness(ctx, message)) {
       sendMail(ctx, message);
     }
+    if (ex != null) {
+      throw ex;
+    }
   }
 
   private boolean meetsSloTimeliness(RuleContext ctx, Object message) throws RuleException {
