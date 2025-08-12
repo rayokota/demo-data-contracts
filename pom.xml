@@ -154,7 +154,7 @@
                                     <mode>WRITE</mode>
                                     <expr>message.totalPriceCents > 0</expr>
                                     <params>
-                                        <dlq.topic>bad_orders</dlq.topic>
+                                        <dlq.topic>orders-dlq</dlq.topic>
                                     </params>
                                     <onFailure>DLQ</onFailure>
                                     <disabled>false</disabled>

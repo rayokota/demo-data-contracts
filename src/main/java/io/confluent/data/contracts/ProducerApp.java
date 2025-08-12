@@ -34,6 +34,7 @@ public class ProducerApp implements Runnable {
 
       // Create the topic if it doesn't exist already
       ClientUtils.createTopic(props, topic);
+      ClientUtils.createTopic(props, topic + "-dlq");
 
     } catch (Exception e) {
       log.error("Error in ProducerApp.constructor", e);
