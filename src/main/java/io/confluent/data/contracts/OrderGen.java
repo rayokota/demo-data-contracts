@@ -12,7 +12,7 @@ public class OrderGen {
     return new Order(
         fake.number().numberBetween(1, 10000),
         fake.number().numberBetween(1, 10000),
-        fake.number().numberBetween(1, 10000),
+        fake.number().numberBetween(-1000, 10000),
         OrderStatus.Pending,
         Instant.now()
     );
