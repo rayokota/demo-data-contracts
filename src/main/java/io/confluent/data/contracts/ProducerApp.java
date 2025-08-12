@@ -34,6 +34,7 @@ public class ProducerApp implements Runnable {
 
       // Create the topic if it doesn't exist already
       ClientUtils.createTopic(props, topic);
+      ClientUtils.createTopic(props, topic + "-dlq");
 
     } catch (Exception e) {
       log.error("Error in ProducerApp.constructor", e);
@@ -44,18 +45,20 @@ public class ProducerApp implements Runnable {
   public void run() {
     try (Producer<String, Object> producer = new KafkaProducer<>(props)) {
       while (true) {
-        // Create a producer record
-        ProducerRecord<String, Object> record = new ProducerRecord<>(topic, OrderGen.getNewOrder());
+        try {
+          // Create a producer record
+          ProducerRecord<String, Object> record = new ProducerRecord<>(topic, OrderGen.getNewOrder());
 
-        // Send the record
-        producer.send(record);
+          // Send the record
+          producer.send(record);
 
-        System.out.println("New order: " + record.value());
+          System.out.println("New order: " + record.value());
 
-        Thread.sleep(1000);
+          Thread.sleep(1000);
+        } catch (Exception e) {
+          log.error("Error in ProducerApp.run", e);
+        }
       }
-    } catch (Exception e) {
-      log.error("Error in ProducerApp.run", e);
     }
   }
 
